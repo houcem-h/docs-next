@@ -1,6 +1,6 @@
-# Propriétés computed et les Observateurs
+# Propriétés calculées et les Observateurs
 
-## Propriété computed
+## Propriété Calculée (computed)
 
 Les expressions dans le template sont très pratiques, mais elles sont destinées à des opérations simples. Mettre trop de logique dans vos templates peut les rendre gonflés et difficiles à maintenir. Par exemple, si nous avons un objet avec un tableau imbriqué:
 
@@ -32,7 +32,7 @@ Et nous voulons afficher différents messages selon que `author` a déjà des li
 
 À ce stade, le template n'est plus simple et déclaratif. Il faut le regarder une seconde avant de se rendre compte qu'il effectue un calcul en fonction de `author.books`. Le problème est aggravé lorsque vous souhaitez inclure ce calcul dans votre template plus d'une fois.
 
-C'est pourquoi pour une logique complexe qui inclut des données réactives, vous devez utiliser une **propriété computed**.
+C'est pourquoi pour une logique complexe qui inclut des données réactives, vous devez utiliser une **propriété calculée (computed)**.
 
 ### Exemple Basique
 
@@ -75,7 +75,7 @@ Ici nous avons déclaré une propriété computed `publishedBooksMessage`.
 
 Essayez de changer la valeur du tableau `books` dans le `data` de l'application et vous verrez comment `publishedBooksMessage` change en conséquence.
 
-Vous pouvez lier des données à des propriétés computed dans des templates comme une propriété normale. Vue est conscient que `vm.publishedBooksMessage` dépend de `vm.author.books`, donc il mettra à jour toutes les liaisons qui dépendent de `vm.publishedBooksMessage` lorsque `vm.author.books` change. Et la meilleure partie est que nous avons créé cette relation de dépendance de manière déclarative: la fonction getter calculée n'a pas d'effets secondaires, ce qui la rend plus facile à tester et à comprendre.
+Vous pouvez lier des données à des propriétés calculée dans des templates comme une propriété normale. Vue est conscient que `vm.publishedBooksMessage` dépend de `vm.author.books`, donc il mettra à jour toutes les liaisons qui dépendent de `vm.publishedBooksMessage` lorsque `vm.author.books` change. Et la meilleure partie est que nous avons créé cette relation de dépendance de manière déclarative: la fonction getter calculée n'a pas d'effets secondaires, ce qui la rend plus facile à tester et à comprendre.
 
 ### Mise en cache computed vs methods
 
@@ -94,7 +94,7 @@ methods: {
 }
 ```
 
-Au lieu d'une propriété computed, nous pouvons définir la même fonction qu'une méthode. Pour le résultat final, les deux approches sont en effet exactement les mêmes. Cependant, la différence est que **les propriétés computed sont mises en cache en fonction de leurs dépendances réactives.** Une propriété computed ne réévaluera que lorsque certaines de ses dépendances réactives auront changé. Cela signifie que tant que `author.books` n'a pas changé, l'accès multiple à la propriété computed `publishedBooksMessage` renverra immédiatement le résultat calculé précédemment sans avoir à exécuter à nouveau la fonction.
+Au lieu d'une propriété calculée, nous pouvons définir la même fonction qu'une méthode. Pour le résultat final, les deux approches sont en effet exactement les mêmes. Cependant, la différence est que **les propriétés calculée sont mises en cache en fonction de leurs dépendances réactives.** Une propriété calculée ne réévaluera que lorsque certaines de ses dépendances réactives auront changé. Cela signifie que tant que `author.books` n'a pas changé, l'accès multiple à la propriété calculée `publishedBooksMessage` renverra immédiatement le résultat calculé précédemment sans avoir à exécuter à nouveau la fonction.
 
 Cela signifie également que la propriété computed suivante ne sera jamais mise à jour, car `Date.now ()` n'est pas une dépendance réactive:
 
@@ -108,11 +108,11 @@ computed: {
 
 En comparaison, un appel de `method` exécutera **toujours** la fonction chaque fois qu'un nouveau rendu se produit.
 
-Pourquoi avons-nous besoin de la mise en cache? Imaginez que nous ayons une propriété computed coûteuse en ressource `list`, qui nécessite de parcourir un énorme tableau et de faire beaucoup de calculs. Ensuite, nous pouvons avoir d'autres propriétés computed qui dépendent à leur tour de `list`. Sans la mise en cache, nous exécuterions le getter de `list` beaucoup plus de fois que nécessaire! Dans les cas où vous ne voulez pas de mise en cache, utilisez plutôt `method`.
+Pourquoi avons-nous besoin de la mise en cache? Imaginez que nous ayons une propriété calculée coûteuse en ressource `list`, qui nécessite de parcourir un énorme tableau et de faire beaucoup de calculs. Ensuite, nous pouvons avoir d'autres propriétés calculée qui dépendent à leur tour de `list`. Sans la mise en cache, nous exécuterions le getter de `list` beaucoup plus de fois que nécessaire! Dans les cas où vous ne voulez pas de mise en cache, utilisez plutôt `method`.
 
-### Setter des propriétés computed
+### Setter des propriétés calculées
 
-Les propriétés computed sont par défaut uniquement en lecture, mais vous pouvez également fournir un setter lorsque vous en avez besoin:
+Les propriétés calculées sont par défaut uniquement en lecture, mais vous pouvez également fournir un setter lorsque vous en avez besoin:
 
 ```js
 // ...
@@ -137,7 +137,7 @@ Maintenant, lorsque vous exécutez `vm.fullName = 'John Doe'`, le setter sera ap
 
 ## Observateurs
 
-Bien que les propriétés computed soient plus appropriées dans la plupart des cas, il arrive parfois qu'un observateur personnalisé soit nécessaire. C'est pourquoi Vue fournit un moyen plus générique de réagir aux changements de données via l'option `watch`. Ceci est particulièrement utile lorsque vous souhaitez effectuer des opérations asynchrones ou coûteuses en réponse à la modification des données.
+Bien que les propriétés calculées soient plus appropriées dans la plupart des cas, il arrive parfois qu'un observateur personnalisé soit nécessaire. C'est pourquoi Vue fournit un moyen plus générique de réagir aux changements de données via l'option `watch`. Ceci est particulièrement utile lorsque vous souhaitez effectuer des opérations asynchrones ou coûteuses en réponse à la modification des données.
 
 Par exemple:
 
@@ -201,7 +201,7 @@ En plus de l'option `watch`, vous pouvez également utiliser l'API impérative [
 
 ### Computed vs Watch
 
-Vue fournit un moyen plus générique d'observer et de réagir aux changements de données sur une instance active courante: **les propriétés watch**. Lorsque vous avez des données qui doivent changer en fonction d'autres données, il est tentant de surutiliser `watch` - surtout si vous venez d'un arrière-plan AngularJS. Cependant, il est souvent préférable d'utiliser une propriété computed plutôt qu'un callback impératif `watch`. Prenons cet exemple:
+Vue fournit un moyen plus générique d'observer et de réagir aux changements de données sur une instance active courante: **les propriétés watch**. Lorsque vous avez des données qui doivent changer en fonction d'autres données, il est tentant de surutiliser `watch` - surtout si vous venez d'un arrière-plan AngularJS. Cependant, il est souvent préférable d'utiliser une propriété calculée plutôt qu'un callback impératif `watch`. Prenons cet exemple:
 
 ```html
 <div id="demo">{{ fullName }}</div>
@@ -227,7 +227,7 @@ const vm = Vue.createApp({
 }).mount('#demo')
 ```
 
-Le code ci-dessus est impératif et répétitif. Comparez-le avec une version de propriété computed:
+Le code ci-dessus est impératif et répétitif. Comparez-le avec une version de propriété calculée:
 
 ```js
 const vm = Vue.createApp({
