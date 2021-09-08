@@ -118,7 +118,7 @@ const app = Vue.createApp({
 
 Pour chaque propriété de l'objet `components`, la clé sera le nom de l'élément personnalisé, tandis que la valeur contiendra l'objet d'options pour le composant.
 
-Notez que ** les composants enregistrés localement ne sont _pas_ également disponibles dans les sous-composants **. Par exemple, si vous vouliez que `ComponentA` soit disponible dans `ComponentB`, vous devrez utiliser:
+Notez que **les composants enregistrés localement ne sont _pas_ également disponibles dans les sous-composants**. Par exemple, si vous vouliez que `ComponentA` soit disponible dans `ComponentB`, vous devrez utiliser:
 
 ```js
 const ComponentA = {
